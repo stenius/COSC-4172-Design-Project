@@ -20,6 +20,7 @@ from random import expovariate, seed
     
 waitMonitor = Monitor()
 queueLengthMonitor = Monitor()
+serverTimeMonitor = Monitor()
 class Source(Process):
     def generate(self, numberOfCustomers, resource, interval=5.):
         for i in range(numberOfCustomers):
@@ -46,6 +47,7 @@ class Customer(Process):
         waitMonitor.observe(wait)
         print "%8.3f %s: Waited %6.3f in line"%(now(),self.name,wait)
         yield hold,self,timeBeingServed
+        serverTimeMonitor.observe(timeBeingServed)
         print "%8.3f %s(%1i): waited on the cashier for %8.3f minutes"%(now(),self.name,P,timeBeingServed)
         yield release,self,res
         while not satisfied:
@@ -83,8 +85,11 @@ def main():
     simulate(until=maxTime)
 
     result = waitMonitor.count(),waitMonitor.mean()                             
-    print "Average wait for %3d completions was %5.3f minutes."% result
+    print "Average wait in queue was for %3d completions was %5.3f minutes."% result
     result = queueLengthMonitor.count(),queueLengthMonitor.mean()                             
-    print "Average queue length for %3d completions was %5.3f minutes."% result
+    print "Average queue length for %3d completions was %5.3f cusomters."% result
+    result = serverTimeMonitor.count(),serverTimeMonitor.mean()                             
+    print "Average time server took in lane for %3d completions was %5.3f \
+    minutes."% result
 if __name__ == "__main__":
     main()
