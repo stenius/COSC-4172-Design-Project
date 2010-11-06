@@ -42,6 +42,7 @@ class Customer(Process):
         wait = now() - arrive #waiting time
         print "%8.3f %s: Waited %6.3f in line"%(now(),self.name,wait)
         yield hold,self,timeBeingServed
+        print "%8.3f %s(%1i): waited on the cashier for %8.3f minutes"%(now(),self.name,P,timeBeingServed)
         yield release,self,res
         while not satisfied:
             if probWillHappen(.2/(P+1)):
@@ -55,6 +56,7 @@ class Customer(Process):
                 wait = now() - arrive #waiting time
                 print "%8.3f %s: Waited %6.3f in line"%(now(),self.name,wait)
                 yield hold,self,timeBeingServed
+                print "%8.3f %s(%1i): waited on the cashier for %8.3f minutes, again"%(now(),self.name,P,timeBeingServed)
                 yield release,self,res
 
             else:
