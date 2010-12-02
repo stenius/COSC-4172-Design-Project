@@ -21,18 +21,20 @@ import getopt
 import sys
 verbose = False
 priority = False
+cap = 5
 #model components
     
 waitMonitor = Monitor()
 queueLengthMonitor = Monitor()
 serverTimeMonitor = Monitor()
 totalTimeMonitor = Monitor()
+serverLengthMonitor = Monitor()
 class Source(Process):
     def generate(self, numberOfCustomers, resource, interval=5.):
         for i in range(numberOfCustomers):
             c = Customer(name="Customer%02d" % (i,))
             activate(c, c.visit(res=resource,P=0))
-            t = expovariate(1.0/interval)
+            t = expovariate(1.0/interval)#takes the mean
             yield hold,self,t
 def probWillHappen(probability):
     rand = random.random()
@@ -46,6 +48,7 @@ class Customer(Process):
         arrive = now()
         Nwaiting = len(res.waitQ)
         queueLengthMonitor.observe(Nwaiting)
+	serverLengthMonitor.observe(cap - res.n)
         if verbose:
             print "%8.3f %s(%1i): Queue has %d customers in line on arrival"%(now(),self.name,P,Nwaiting)
 	if priority:
@@ -104,18 +107,20 @@ def main():
             if toggle:
                 priority = True
                 print 'with a priority queue'
-		shop = Resource(capacity=2, name='Shop', unitName="Lane",
+		shop = Resource(capacity=cap, name='Shop', unitName="Lane",
                     qType=PriorityQ)
             else:
                 priority = False
                 print 'without a priority queue'
-		shop = Resource(capacity=2, name='Shop', unitName="Lane")
+		shop = Resource(capacity=cap, name='Shop', unitName="Lane")
             print 'using seed value ' + str(seedVal) + ':'
             seed(seedVal)
             initialize()
             waitMonitor.reset()
             queueLengthMonitor.reset()
             serverTimeMonitor.reset()
+            serverLengthMonitor.reset()
+            totalTimeMonitor.reset()
             s = Source('Source')
             #make a boatload of customers
             activate(s,s.generate(numberOfCustomers=500, resource=shop), at=0.0)
@@ -139,10 +144,16 @@ def main():
             print "\tAverage time server took in lane for %3d completions was %5.3f minutes."% result
             print '\t\tmin:',results[0],'max:',results[-1]
 
+	    result = serverLengthMonitor.count(),serverLengthMonitor.mean()
+            results = serverLengthMonitor.yseries()
+            results.sort()
+            print "\tAverage number of busy lanes after %3d customers was %5.3f lanes in use."% result
+            print '\t\tmin:',results[0],'max:',results[-1]
+
             result = totalTimeMonitor.count(),totalTimeMonitor.mean() 
             results = totalTimeMonitor.yseries()
             results.sort()
-            print "\tAverage Total wait time for %3d customers was %5.3f customers."% result
+            print "\tAverage Total wait time for %3d customers was %5.3f minutes."% result
             print '\t\tmin:',results[0],'max:',results[-1]
             stopSimulation()
 def usage():
