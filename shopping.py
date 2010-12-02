@@ -54,7 +54,7 @@ class Customer(Process):
         if verbose:
             print "%8.3f %s: Waited %6.3f in line"%(now(),self.name,wait)
         yield hold,self,timeBeingServed
-        serverTimeMonitor.observe(timeBeingServed)
+        serviceTimeTotal = timeBeingServed
         if verbose:
             print "%8.3f %s(%1i): cashier took %8.3f minutes to check out items."%(now(),self.name,P,timeBeingServed)
         yield release,self,res
@@ -67,7 +67,7 @@ class Customer(Process):
                 arrive = now()
                 yield request,self,res,P
                 timeBeingServed = uniform(2./(P+1.),2.8/(P+1.))
-
+                serviceTimeTotal += timeBeingServed
                 wait = now() - arrive #waiting time
                 if verbose:
                     print "%8.3f %s: Waited %6.3f in line"%(now(),self.name,wait)
@@ -78,6 +78,7 @@ class Customer(Process):
             else:
                 satisfied=True
 
+        serverTimeMonitor.observe(serviceTimeTotal)
 #        if not random.randint(0,4):#1/5 chance of rejoing queue
             #rejoin the queue
 #            yield request,self,res,P+1
