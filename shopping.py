@@ -58,6 +58,7 @@ class Customer(Process):
         serviceTimeTotal = timeBeingServed
         if verbose:
             print "%8.3f %s(%1i): cashier took %8.3f minutes to check out items."%(now(),self.name,P,timeBeingServed)
+        timeThrough = P
         while not satisfied:
             if probWillHappen(.2/(P+1)):
                 #make the customer rejoin the queue
@@ -65,10 +66,11 @@ class Customer(Process):
                     print "%8.3f %s: Customer Displeased "%(now(),self.name)
                 if priority:
                     P = P+1
+                timeThrough += 1
                 arrive = now()
                 yield release,self,res
                 yield request,self,res,P
-                timeBeingServed = uniform(2./(P+1.),2.8/(P+1.))
+                timeBeingServed = uniform(2./(timeThrough+1.),2.8/(timeThrough+1.))
                 serviceTimeTotal += timeBeingServed
                 wait = now() - arrive #waiting time
                 totalWait += wait
