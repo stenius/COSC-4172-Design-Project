@@ -78,9 +78,9 @@ class Customer(Process):
                 if verbose:
                     print "%8.3f %s(%1i): waited on the cashier for %8.3f minutes, again"%(now(),self.name,P,timeBeingServed)
             else:
-                yield release,self,res
                 satisfied=True
-
+        print 'releasing'
+        yield release,self,res
         serverTimeMonitor.observe(serviceTimeTotal)
         waitMonitor.observe(totalWait)
         totalTimeMonitor.observe(serviceTimeTotal + totalWait)
@@ -95,15 +95,6 @@ maxTime = 480. #minutes
 def main():
     global priority
     seeds = [
-    99999,
-    99998,
-    99997,
-    99996,
-    99995,
-    99994,
-    99993,
-    99992,
-    99991,
     99990,]
     for seedVal in seeds:
         for toggle in (True,False):
@@ -114,7 +105,7 @@ def main():
                 priority = False
                 print 'without a priority queue'
             print 'using seed value ' + str(seedVal) + ':'
-            shop = Resource(capacity=5, name='Shop', unitName="Lane", qType=PriorityQ)
+            shop = Resource(capacity=1, name='Shop', unitName="Lane", qType=PriorityQ)
             seed(seedVal)
             initialize()
             waitMonitor.reset()
@@ -124,15 +115,31 @@ def main():
             #make a boatload of customers
             activate(s,s.generate(numberOfCustomers=500, resource=shop), at=0.0)
             simulate(until=maxTime)
-            result = waitMonitor.count(),waitMonitor.mean()                             
+
+            result = waitMonitor.count(),waitMonitor.mean()
+            results = waitMonitor.yseries()
+            results.sort()
             print "\tAverage wait in queue was for %3d completions was %5.3f minutes."% result
-            result = queueLengthMonitor.count(),queueLengthMonitor.mean()                             
+            print 'min:',results[0],'max:',results[-1]
+
+            results = queueLengthMonitor.yseries()
+            results.sort()
+            result = queueLengthMonitor.count(),queueLengthMonitor.mean()                           
             print "\tAverage queue length for %3d completions was %5.3f customers."% result
+            print 'min:',results[0],'max:',results[-1]
+
             result = serverTimeMonitor.count(),serverTimeMonitor.mean()                             
+            results = serverTimeMonitor.yseries()
+            results.sort()
             print "\tAverage time server took in lane for %3d completions was %5.3f \
     minutes."% result
-            result = totalTimeMonitor.count(),totalTimeMonitor.mean()                             
+            print 'min:',results[0],'max:',results[-1]
+
+            result = totalTimeMonitor.count(),totalTimeMonitor.mean() 
+            results = totalTimeMonitor.yseries()
+            results.sort()
             print "\tAverage Total wait time for %3d customers was %5.3f customers."% result
+            print 'min:',results[0],'max:',results[-1]
             stopSimulation()
 def usage():
 	print "This program will run a simulation using pre-programmed seed values multiple times."
