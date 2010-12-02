@@ -123,19 +123,17 @@ def usage():
 	print "\n\tOptions:\n\t\t\t-h\tBring up the help menu\n\t\t\t-v\tEnable verbose mode."
 	print "\t\t\t-p\tEnable Priority option for requeuing dissatisfied customers.\n"
 if __name__ == "__main__":
-#    global verbose, priority
     try:
-            opts = getopt.getopt(sys.argv, "v:p:h", ["verbose", "priority", "help"])
+        opts = getopt.getopt(sys.argv, "v:p:h", ["verbose", "priority", "help"])
     except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+    for opt in opts[1]:
+        if opt in ("-h", "--help"):
             usage()
-            sys.exit(2)
-    for opt in opts:
-            if opt in ("-h", "--help"):
-                    usage()
-                    sys.exit()
-            elif opt in ("-p", "--priority"):
-                    priority = True
-            elif opt in ("-v", "--verbose"):
-                    verbose = True
-
+            sys.exit()
+        elif opt in ("-p", "--priority"):
+            priority = True
+        elif opt in ("-v", "--verbose"):
+            verbose = True
     main()
