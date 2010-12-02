@@ -91,6 +91,7 @@ class Customer(Process):
 #simulation data
 maxTime = 480. #minutes
 def main():
+    global priority
     seeds = [
     99999,
     99998,
@@ -103,6 +104,13 @@ def main():
     99991,
     99990,]
     for seedVal in seeds:
+        for toggle in (True,False):
+            if toggle:
+                priority = True
+                print 'with a priority queue'
+            else:
+                priority = False
+                print 'without a priority queue'
             print 'using seed value ' + str(seedVal) + ':'
             shop = Resource(capacity=5, name='Shop', unitName="Lane", qType=PriorityQ)
             seed(seedVal)
