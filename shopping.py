@@ -6,6 +6,7 @@
 
 
 #Author:        Paul Stenius
+                Anthony Mayes
 
 #Created    Oct 27th 2010
 
@@ -16,7 +17,10 @@ from SimPy.Simulation import *
 
 from random import expovariate, seed
 
+import getopt
+import sys
 verbose = False
+priority = False
 #model components
     
 waitMonitor = Monitor()
@@ -82,8 +86,22 @@ class Customer(Process):
 
 #simulation data
 maxTime = 480. #minutes
-def main():
-    seeds = [
+def main(argv):
+	global verbose, priority
+	try:
+		opts = getopt.getopt(argv, "v:p:h", ["verbose", "priority", "help"])
+	except getopt.GetoptError:
+		usage()
+		sys.exit(2)
+	for opt in opts:
+		if opt in ("-h", "--help"):
+			usage()
+			sys.exit()
+		elif opt in ("-p", "--priority"):
+			priority = True
+		elif opt in ("-v", "--verbose"):
+			verbose = True
+	seeds = [
         99999,
         99998,
         99997,
@@ -93,26 +111,30 @@ def main():
         99993,
         99992,
         99991,
-        99990,]
-    for seedVal in seeds:
-        print 'using seed value ' + str(seedVal) + ':'
-        shop = Resource(capacity=5, name='Shop', unitName="Lane", qType=PriorityQ)
-        seed(seedVal)
-        initialize()
-        waitMonitor.reset()
-        queueLengthMonitor.reset()
-        serverTimeMonitor.reset()
-        s = Source('Source')
-        #make a boatload of customers
-        activate(s,s.generate(numberOfCustomers=500, resource=shop), at=0.0)
-        simulate(until=maxTime)
-        result = waitMonitor.count(),waitMonitor.mean()                             
-        print "\tAverage wait in queue was for %3d completions was %5.3f minutes."% result
-        result = queueLengthMonitor.count(),queueLengthMonitor.mean()                             
-        print "\tAverage queue length for %3d completions was %5.3f cusomters."% result
-        result = serverTimeMonitor.count(),serverTimeMonitor.mean()                             
-        print "\tAverage time server took in lane for %3d completions was %5.3f \
+		99990,]
+	for seedVal in seeds:
+		print 'using seed value ' + str(seedVal) + ':'
+		shop = Resource(capacity=5, name='Shop', unitName="Lane", qType=PriorityQ)
+		seed(seedVal)
+		initialize()
+		waitMonitor.reset()
+		queueLengthMonitor.reset()
+		serverTimeMonitor.reset()
+		s = Source('Source')
+		#make a boatload of customers
+		activate(s,s.generate(numberOfCustomers=500, resource=shop), at=0.0)
+		simulate(until=maxTime)
+		result = waitMonitor.count(),waitMonitor.mean()                             
+		print "\tAverage wait in queue was for %3d completions was %5.3f minutes."% result
+		result = queueLengthMonitor.count(),queueLengthMonitor.mean()                             
+		print "\tAverage queue length for %3d completions was %5.3f customers."% result
+		result = serverTimeMonitor.count(),serverTimeMonitor.mean()                             
+		print "\tAverage time server took in lane for %3d completions was %5.3f \
         minutes."% result
-        stopSimulation()
+		stopSimulation()
+def usage():
+	print "This program will run a simulation using pre-programmed seed values multiple times."
+	print "\n\tOptions:\n\t\t\t-h\tBring up the help menu\n\t\t\t-v\tEnable verbose mode."
+	print "\t\t\t-p\tEnable Priority option for requeuing dissatisfied customers.\n"
 if __name__ == "__main__":
-    main()
+	main(sys.argv[1])
