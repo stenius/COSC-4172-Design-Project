@@ -26,6 +26,7 @@ priority = False
 waitMonitor = Monitor()
 queueLengthMonitor = Monitor()
 serverTimeMonitor = Monitor()
+totalTimeMonitor = Monitor()
 class Source(Process):
     def generate(self, numberOfCustomers, resource, interval=5.):
         for i in range(numberOfCustomers):
@@ -82,6 +83,7 @@ class Customer(Process):
 
         serverTimeMonitor.observe(serviceTimeTotal)
         waitMonitor.observe(totalWait)
+        totalTimeMonitor.observe(serviceTimeTotal + totalWait)
 #        if not random.randint(0,4):#1/5 chance of rejoing queue
             #rejoin the queue
 #            yield request,self,res,P+1
@@ -129,6 +131,8 @@ def main():
             result = serverTimeMonitor.count(),serverTimeMonitor.mean()                             
             print "\tAverage time server took in lane for %3d completions was %5.3f \
     minutes."% result
+            result = totalTimeMonitor.count(),totalTimeMonitor.mean()                             
+            print "\tAverage Total wait time for %3d customers was %5.3f customers."% result
             stopSimulation()
 def usage():
 	print "This program will run a simulation using pre-programmed seed values multiple times."
