@@ -63,7 +63,8 @@ class Customer(Process):
                 #make the customer rejoin the queue
                 if verbose:
                     print "%8.3f %s: Customer Displeased "%(now(),self.name)
-                P = P+1
+                if priority:
+                    P = P+1
                 arrive = now()
                 yield request,self,res,P
                 timeBeingServed = uniform(2./(P+1.),2.8/(P+1.))
