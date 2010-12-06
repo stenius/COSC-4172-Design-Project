@@ -11,7 +11,6 @@
 #Created    Oct 27th 2010
 
 #!/usr/bin/env python
-from random import *
 
 from SimPy.Simulation import *
 
@@ -41,7 +40,7 @@ def probWillHappen(probability):
     return False
 class Customer(Process):
     def visit(self, timeBeingServed=1, res=None, P=0, satisfied=False):
-        timeBeingServed = uniform(2./(P+1.),2.8/(P+1.))
+        timeBeingServed = random.uniform(2./(P+1.),2.8/(P+1.))
         arrive = now()
         if verbose:
             print "%8.3f %s(%1i): Queue has %d customers in line on arrival"%(now(),self.name,P,Nwaiting)
@@ -72,7 +71,7 @@ class Customer(Process):
 				    yield request,self,res,P
                 else:
                     yield request,self,res
-                timeBeingServed = uniform(2./(timeThrough+1.),2.8/(timeThrough+1.))
+                timeBeingServed = random.uniform(2./(timeThrough+1.),2.8/(timeThrough+1.))
                 serviceTimeTotal += timeBeingServed
                 wait = now() - arrive #waiting time
                 totalWait += wait
