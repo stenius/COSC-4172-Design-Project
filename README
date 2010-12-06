@@ -6,3 +6,7 @@ to be helped a second time.
 
 This simulation was written to determine weather having a priority queue for
 dissatisfied customers will improve the throughput of the store.
+
+Dependences:
+SimPy - simpy.sourceforge.net
+Python - python.org
