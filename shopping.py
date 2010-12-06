@@ -1,7 +1,7 @@
 #Name:          shopping.py
 
 #Scenario:      Customers visit some kind of store and get a service number and
-#               are fed into one a a checkout lane.  Some times the customers
+#               are fed into one a checkout lane.  Some times the customers
 #               are dissatisfied and they need to be helped a second time.
 
 
