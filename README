@@ -10,3 +10,231 @@ dissatisfied customers will improve the throughput of the store.
 Dependences:
 SimPy - simpy.sourceforge.net
 Python - python.org
+
+Running:
+./shopping.py
+or
+python shopping.py
+on unix systems.
+
+Output:
+with a priority queue
+using seed value 99999:
+	Average wait in queue for  99 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  99 transactions was 2.754     minutes.
+	min: 2.00642607315 max: 4.77794964078
+	Average Total time for  99 customers was 2.754 minutes.
+	min: 2.00642607315 max: 4.77794964078
+	Max number of servers busy: 3
+without a priority queue
+using seed value 99999:
+	Average wait in queue for  99 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  99 transactions was 2.754     minutes.
+	min: 2.00642607315 max: 4.77794964078
+	Average Total time for  99 customers was 2.754 minutes.
+	min: 2.00642607315 max: 4.77794964078
+	Max number of servers busy: 3
+with a priority queue
+using seed value 99998:
+	Average wait in queue for  89 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  89 transactions was 2.651     minutes.
+	min: 2.0131218271 max: 4.78106155754
+	Average Total time for  89 customers was 2.651 minutes.
+	min: 2.0131218271 max: 4.78106155754
+	Max number of servers busy: 5
+without a priority queue
+using seed value 99998:
+	Average wait in queue for  89 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  89 transactions was 2.651     minutes.
+	min: 2.0131218271 max: 4.78106155754
+	Average Total time for  89 customers was 2.651 minutes.
+	min: 2.0131218271 max: 4.78106155754
+	Max number of servers busy: 5
+with a priority queue
+using seed value 99997:
+	Average wait in queue for  99 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  99 transactions was 2.687     minutes.
+	min: 2.01156586559 max: 4.09037219053
+	Average Total time for  99 customers was 2.687 minutes.
+	min: 2.01156586559 max: 4.09037219053
+	Max number of servers busy: 4
+without a priority queue
+using seed value 99997:
+	Average wait in queue for  99 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  99 transactions was 2.687     minutes.
+	min: 2.01156586559 max: 4.09037219053
+	Average Total time for  99 customers was 2.687 minutes.
+	min: 2.01156586559 max: 4.09037219053
+	Max number of servers busy: 4
+with a priority queue
+using seed value 99996:
+	Average wait in queue for  82 transactions was 0.000 minutes.
+	min: 0.0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  82 transactions was 2.555     minutes.
+	min: 2.01360544171 max: 4.14947477808
+	Average Total time for  82 customers was 2.555 minutes.
+	min: 2.01360544171 max: 4.14947477808
+	Max number of servers busy: 3
+without a priority queue
+using seed value 99996:
+	Average wait in queue for  82 transactions was 0.000 minutes.
+	min: 0.0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  82 transactions was 2.555     minutes.
+	min: 2.01360544171 max: 4.14947477808
+	Average Total time for  82 customers was 2.555 minutes.
+	min: 2.01360544171 max: 4.14947477808
+	Max number of servers busy: 3
+with a priority queue
+using seed value 99995:
+	Average wait in queue for 125 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for 125 transactions was 2.593     minutes.
+	min: 2.0286448651 max: 4.20389419631
+	Average Total time for 125 customers was 2.593 minutes.
+	min: 2.0286448651 max: 4.20389419631
+	Max number of servers busy: 4
+without a priority queue
+using seed value 99995:
+	Average wait in queue for 125 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for 125 transactions was 2.593     minutes.
+	min: 2.0286448651 max: 4.20389419631
+	Average Total time for 125 customers was 2.593 minutes.
+	min: 2.0286448651 max: 4.20389419631
+	Max number of servers busy: 4
+with a priority queue
+using seed value 99994:
+	Average wait in queue for  99 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  99 transactions was 2.629     minutes.
+	min: 2.0149649517 max: 4.38541672312
+	Average Total time for  99 customers was 2.629 minutes.
+	min: 2.0149649517 max: 4.38541672312
+	Max number of servers busy: 3
+without a priority queue
+using seed value 99994:
+	Average wait in queue for  99 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  99 transactions was 2.629     minutes.
+	min: 2.0149649517 max: 4.38541672312
+	Average Total time for  99 customers was 2.629 minutes.
+	min: 2.0149649517 max: 4.38541672312
+	Max number of servers busy: 3
+with a priority queue
+using seed value 99993:
+	Average wait in queue for  91 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  91 transactions was 2.616     minutes.
+	min: 2.00039361946 max: 4.42934944582
+	Average Total time for  91 customers was 2.616 minutes.
+	min: 2.00039361946 max: 4.42934944582
+	Max number of servers busy: 3
+without a priority queue
+using seed value 99993:
+	Average wait in queue for  91 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  91 transactions was 2.616     minutes.
+	min: 2.00039361946 max: 4.42934944582
+	Average Total time for  91 customers was 2.616 minutes.
+	min: 2.00039361946 max: 4.42934944582
+	Max number of servers busy: 3
+with a priority queue
+using seed value 99992:
+	Average wait in queue for 120 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for 120 transactions was 2.693     minutes.
+	min: 2.00549102365 max: 4.45827442839
+	Average Total time for 120 customers was 2.693 minutes.
+	min: 2.00549102365 max: 4.45827442839
+	Max number of servers busy: 5
+without a priority queue
+using seed value 99992:
+	Average wait in queue for 120 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for 120 transactions was 2.693     minutes.
+	min: 2.00549102365 max: 4.45827442839
+	Average Total time for 120 customers was 2.693 minutes.
+	min: 2.00549102365 max: 4.45827442839
+	Max number of servers busy: 5
+with a priority queue
+using seed value 99991:
+	Average wait in queue for  95 transactions was 0.000 minutes.
+	min: 0.0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  95 transactions was 2.663     minutes.
+	min: 2.00604226383 max: 5.4938031153
+	Average Total time for  95 customers was 2.663 minutes.
+	min: 2.00604226383 max: 5.4938031153
+	Max number of servers busy: 3
+without a priority queue
+using seed value 99991:
+	Average wait in queue for  95 transactions was 0.000 minutes.
+	min: 0.0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for  95 transactions was 2.663     minutes.
+	min: 2.00604226383 max: 5.4938031153
+	Average Total time for  95 customers was 2.663 minutes.
+	min: 2.00604226383 max: 5.4938031153
+	Max number of servers busy: 3
+with a priority queue
+using seed value 99990:
+	Average wait in queue for 106 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for 106 transactions was 2.628     minutes.
+	min: 2.00745987078 max: 4.97484479401
+	Average Total time for 106 customers was 2.628 minutes.
+	min: 2.00745987078 max: 4.97484479401
+	Max number of servers busy: 4
+without a priority queue
+using seed value 99990:
+	Average wait in queue for 106 transactions was 0.000 minutes.
+	min: 0 max: 0.0
+	Average queue length was 0.000 customers.
+	min: 0 max: 0
+	Average time server took in lane for 106 transactions was 2.628     minutes.
+	min: 2.00745987078 max: 4.97484479401
+	Average Total time for 106 customers was 2.628 minutes.
+	min: 2.00745987078 max: 4.97484479401
+	Max number of servers busy: 4
