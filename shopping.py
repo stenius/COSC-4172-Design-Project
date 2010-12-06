@@ -6,7 +6,7 @@
 
 
 #Author:        Paul Stenius
-#               Anthony Mayes
+#                Anthony Mayes
 
 #Created    Oct 27th 2010
 
@@ -25,10 +25,8 @@ cap = 5
 #model components
     
 waitMonitor = Monitor()
-queueLengthMonitor = Monitor()
 serverTimeMonitor = Monitor()
 totalTimeMonitor = Monitor()
-serverLengthMonitor = Monitor()
 class Source(Process):
     def generate(self, numberOfCustomers, resource, interval=5.):
         for i in range(numberOfCustomers):
@@ -43,18 +41,15 @@ def probWillHappen(probability):
     return False
 class Customer(Process):
     def visit(self, timeBeingServed=1, res=None, P=0, satisfied=False):
-        """P plays double duty as both the probability and the priority"""
         timeBeingServed = uniform(2./(P+1.),2.8/(P+1.))
         arrive = now()
-        Nwaiting = len(res.waitQ)
-        queueLengthMonitor.observe(Nwaiting)
-	serverLengthMonitor.observe(cap - res.n)
         if verbose:
             print "%8.3f %s(%1i): Queue has %d customers in line on arrival"%(now(),self.name,P,Nwaiting)
-	if priority:
-            yield request,self,res,P
-	else:
-	    yield request,self,res
+
+        if priority:
+		    yield request,self,res,P
+        else:
+            yield request,self,res
         wait = now() - arrive #waiting time
         totalWait = wait
         if verbose:
@@ -63,19 +58,21 @@ class Customer(Process):
         serviceTimeTotal = timeBeingServed
         if verbose:
             print "%8.3f %s(%1i): cashier took %8.3f minutes to check out items."%(now(),self.name,P,timeBeingServed)
+        timeThrough = P
         while not satisfied:
             if probWillHappen(.2/(P+1)):
                 #make the customer rejoin the queue
                 if verbose:
                     print "%8.3f %s: Customer Displeased "%(now(),self.name)
                 P = P+1
+                timeThrough += 1
                 arrive = now()
                 yield release,self,res
                 if priority:
-            		yield request,self,res,P
-		else:
-	    		yield request,self,res
-                timeBeingServed = uniform(2./(P+1.),2.8/(P+1.))
+				    yield request,self,res,P
+                else:
+                    yield request,self,res
+                timeBeingServed = uniform(2./(timeThrough+1.),2.8/(timeThrough+1.))
                 serviceTimeTotal += timeBeingServed
                 wait = now() - arrive #waiting time
                 totalWait += wait
@@ -101,25 +98,33 @@ maxTime = 480. #minutes
 def main():
     global priority
     seeds = [
+	99999,
+	99998,
+	99997,
+	99996,
+	99995,
+	99994,
+	99993,
+	99992,
+	99991,
     99990,]
     for seedVal in seeds:
         for toggle in (True,False):
             if toggle:
                 priority = True
                 print 'with a priority queue'
-		shop = Resource(capacity=cap, name='Shop', unitName="Lane",
-                    qType=PriorityQ)
+                shop = Resource(capacity=cap, name='Shop', unitName="Lane",
+                   qType=PriorityQ,monitored=True,monitorType=Monitor)
             else:
                 priority = False
                 print 'without a priority queue'
-		shop = Resource(capacity=cap, name='Shop', unitName="Lane")
+                shop = Resource(capacity=cap, name='Shop', unitName="Lane",
+                   monitored=True,monitorType=Monitor)  
             print 'using seed value ' + str(seedVal) + ':'
             seed(seedVal)
             initialize()
             waitMonitor.reset()
-            queueLengthMonitor.reset()
             serverTimeMonitor.reset()
-            serverLengthMonitor.reset()
             totalTimeMonitor.reset()
             s = Source('Source')
             #make a boatload of customers
@@ -129,32 +134,30 @@ def main():
             result = waitMonitor.count(),waitMonitor.mean()
             results = waitMonitor.yseries()
             results.sort()
-            print "\tAverage wait in queue was for %3d completions was %5.3f minutes."% result
-            print '\t\tmin:',results[0],'max:',results[-1]
+            print "\tAverage wait in queue for %3d transactions was %5.3f minutes."% result
+            print '\tmin:',results[0],'max:',results[-1]
 
-            results = queueLengthMonitor.yseries()
+            results = shop.waitMon.yseries()
             results.sort()
-            result = queueLengthMonitor.count(),queueLengthMonitor.mean()                           
-            print "\tAverage queue length for %3d completions was %5.3f customers."% result
-            print '\t\tmin:',results[0],'max:',results[-1]
+            result = shop.waitMon.mean()                           
+            print "\tAverage queue length was %5.3f customers."% result
+            print '\tmin:',results[0],'max:',results[-1]
 
             result = serverTimeMonitor.count(),serverTimeMonitor.mean()                             
             results = serverTimeMonitor.yseries()
             results.sort()
-            print "\tAverage time server took in lane for %3d completions was %5.3f minutes."% result
-            print '\t\tmin:',results[0],'max:',results[-1]
-
-	    result = serverLengthMonitor.count(),serverLengthMonitor.mean()
-            results = serverLengthMonitor.yseries()
-            results.sort()
-            print "\tAverage number of busy lanes after %3d customers was %5.3f lanes in use."% result
-            print '\t\tmin:',results[0],'max:',results[-1]
+            print "\tAverage time server took in lane for %3d transactions was %5.3f \
+    minutes."% result
+            print '\tmin:',results[0],'max:',results[-1]
 
             result = totalTimeMonitor.count(),totalTimeMonitor.mean() 
             results = totalTimeMonitor.yseries()
             results.sort()
-            print "\tAverage Total wait time for %3d customers was %5.3f minutes."% result
-            print '\t\tmin:',results[0],'max:',results[-1]
+            print "\tAverage Total time for %3d customers was %5.3f minutes."% result
+            print '\tmin:',results[0],'max:',results[-1]
+			
+            result = shop.actMon.yseries()
+            print "\tMax number of servers busy:",max(result)
             stopSimulation()
 def usage():
 	print "This program will run a simulation using pre-programmed seed values multiple times."
